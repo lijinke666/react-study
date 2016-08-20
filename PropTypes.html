@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>PropTypes 用来验证组件实例的属性是否符合要求</title>
+    <style>
+        *{
+            font-family:  "Microsoft YaHei";
+        }
+    </style>
+    <!--必须首先加载-->
+    <script src="js/react.js"></script>                <!-- react库 -->
+    <script src="js/react-dom.js"></script>            <!-- 提供与DOM相关的操作 -->
+    <script src="js/browser.min.js"></script>          <!-- 将JSX语法 转换成 js语法 -->
+</head>
+<body>
+<div id="PropTypes"></div>
+</body>
+<script type="text/babel">
+    var PropTypes = React.createClass({
+        getDefaultProps:function(){               //给当前组件 设置默认值  相当于jquery 的 extend 方法
+            return {
+                name : '李金珂'
+            }
+        },
+        PropTypes:{
+            name: React.PropTypes.string.isRequired          //设置当前组件的name属性必须 是string  并且必须填写
+        },
+        render:function(){
+            return <h2>{this.props.name}</h2>
+        }
+    });
+    ReactDOM.render(
+            <PropTypes/>,
+            document.getElementById("PropTypes")
+    )
+</script>
+</html>

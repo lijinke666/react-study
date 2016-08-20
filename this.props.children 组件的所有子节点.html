@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>this.props.children 组件的所有子节点</title>
+    <style>
+        *{
+            font-family:  "Microsoft YaHei";
+        }
+    </style>
+    <link rel="stylesheet" href="http://libs.useso.com/js/bootstrap/3.2.0/css/bootstrap.min.css">
+    <!--必须首先加载-->
+    <script src="js/react.js"></script>                <!-- react库 -->
+    <script src="js/react-dom.js"></script>            <!-- 提供与DOM相关的操作 -->
+    <script src="js/browser.min.js"></script>          <!-- 将JSX语法 转换成 js语法 -->
+</head>
+<body>
+<div class="container">
+
+</div>
+</body>
+<script type="text/babel">
+    var NodeList = React.createClass({
+        render:function(){
+            return (
+                <ul>
+                {
+                    React.Children.map(this.props.children,function( list ){          //遍历当前组件所有的子节点
+                        return <li>{list}</li>
+                    })
+                }
+                </ul>
+            )
+        }
+    });
+    /*组件只有一个节点 返回Object*/
+    /*组件有多个节点   返回Array*/
+    /*组件没有节点     返回undifend*/
+    ReactDOM.render(
+            <NodeList>
+                <span>李金珂</span>
+                <span>赵日天</span>
+                <span>龙浩天</span>
+            </NodeList>,
+            document.getElementsByClassName('container')[0]
+    )
+</script>
+</html>
