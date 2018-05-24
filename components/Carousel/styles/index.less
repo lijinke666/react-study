@@ -1,0 +1,56 @@
+@import "./vars.less";
+@import "./mixins.less";
+#root {
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+}
+
+.main {
+    @width: 600px;
+    @height: 300px;
+    width: @width;
+    height: @height;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    position: relative;
+    .container {
+        height: @height;
+        width: @width * 5;
+        position: absolute;
+        left:0;
+        top:0;
+        transition: transform .5s;
+        .item {
+            width: @width;
+            height: inherit;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            text-align: center;
+            color: #fff;
+            float: left;
+        }
+        .item:first-child {
+            background-color: #545454;
+        }
+        .item:nth-of-type(2) {
+            background-color: #356;
+        }
+        .item:nth-of-type(3) {
+            background-color: #396;
+        }
+        .item:nth-of-type(4) {
+            background-color: #F65;
+        }
+        .item:last-child {
+            background-color: rgb(187, 187, 64);
+        }
+    }
+}
