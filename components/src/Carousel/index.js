@@ -6,7 +6,7 @@
  */
 
 import React, { PureComponent } from "react";
-import "./styles/index.less";
+import "./index.less";
 
 export default class Carousel extends PureComponent {
   state = {
