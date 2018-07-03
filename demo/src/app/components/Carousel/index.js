@@ -1,58 +1,58 @@
-import React, { Component } from 'react';
-import ReactDom from 'react-dom';
-import cls from 'classnames';
-import AlloyFinger from 'alloyfinger';
-import './styles.less';
+import React, { Component } from "react";
+import ReactDom from "react-dom";
+import cls from "classnames";
+import AlloyFinger from "alloyfinger";
+import "./styles.less";
 
 export default class Carousel extends Component {
   constructor(props) {
     super(props);
     this.handle = null;
     this.touchType = {
-      down: 'DOWN',
-      up: 'UP'
+      down: "DOWN",
+      up: "UP"
     };
   }
   state = {
     index: 0,
     data: [
       {
-        color: '#396',
-        text: 'page1'
+        color: "#396",
+        text: "page1"
       },
       {
-        color: '#F63',
-        text: 'page2'
+        color: "#F63",
+        text: "page2"
       },
       {
-        color: '#06a',
-        text: 'page3'
+        color: "#06a",
+        text: "page3"
       }
     ]
   };
   onMoveDown = () => {
-    console.log('down');
+    console.log("down");
     this.setState({
       index: this.state.index - 1
     });
   };
   onMoveUp = () => {
-    console.log('up');
+    console.log("up");
     const data = [...this.state.data];
-    const shift = data.pop()
-    data.unshift(shift)
-    console.log(data)
+    const shift = data.pop();
+    data.unshift(shift);
+    console.log(data);
     this.setState({
       data
-    })
+    });
   };
   onSwipe = direction => {
     const _direction = direction.toUpperCase();
     switch (_direction) {
-      case this.touchType['down']:
+      case this.touchType["down"]:
         this.onMoveDown();
         break;
-      case this.touchType['up']:
+      case this.touchType["up"]:
         this.onMoveUp();
         break;
       default:
@@ -67,12 +67,13 @@ export default class Carousel extends Component {
         {data.map(({ color, text }, i) => {
           return (
             <div
-              className={cls('wrap',{active})}
+              className={cls("wrap", { active: index === i})}
               key={i}
               style={{
                 backgroundColor: color,
                 zIndex: i + 1,
-                bottom: `${i * 10}%`
+                // bottom: `${i * 10}%`
+                transform:`translate3d(0,${ i === 0 ? 100 : 200 - (data.length - i) * 10}%,0)`
               }}
             >
               <span className="text">{text}</span>
@@ -83,7 +84,7 @@ export default class Carousel extends Component {
     );
   }
   move = direction => {
-    console.log('swipe:', direction);
+    console.log("swipe:", direction);
   };
   componentDidMount() {
     this.handle = new AlloyFinger(this.node, {
@@ -93,6 +94,6 @@ export default class Carousel extends Component {
     });
   }
   componentWillMount() {
-    Reflect.deleteProperty(this, 'handle');
+    Reflect.deleteProperty(this, "handle");
   }
 }

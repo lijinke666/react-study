@@ -1,4 +1,10 @@
-
+/*
+ * @Author: jinke.li 
+ * @Date: 2017-05-03 16:32:21 
+ * @Last Modified by: Jinke.Li
+ * @Last Modified time: 2018-06-19 15:16:19
+ */
+/*eslint-disable*/
 const path = require("path");
 const webpack = require("webpack");
 const HtmlWebpackPlugin = require("html-webpack-plugin"); //自动生成一个html 引入打包之后的js
