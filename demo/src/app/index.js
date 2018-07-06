@@ -5,6 +5,9 @@ import { ConnectedRouter } from "react-router-redux"; //5.0 移除了 history �
 import { Home, TestPage } from "libs/routes";
 import NotFound from "app/components/NotFound";
 import history from "libs/history";
+import Carousel from "shared/components/Carousel";
+import Carousel2 from "shared/components/Carousel2";
+import Carousel3 from "shared/components/Carousel3";
 
 import "./styles.less";
 
@@ -13,7 +16,12 @@ class App extends PureComponent {
     return (
       <ConnectedRouter history={history}>
         <BrowserRouter>
-          <Switch>
+          <Switch
+            atEnter={{ opacity: 0 }}
+            atLeave={{ opacity: 0 }}
+            atActive={{ opacity: 1 }}
+            className="switch-wrapper"
+          >
             <Route exact path="/" component={Home} />
             <Route
               exact
@@ -22,6 +30,9 @@ class App extends PureComponent {
               component={Home}
             />
             <Route path="/testPage" component={TestPage} />
+            <Route path="/test1" component={Carousel} />
+            <Route path="/test2" component={Carousel2} />
+            <Route path="/test3" component={Carousel3} />
             <Route path="*" component={NotFound} />
           </Switch>
         </BrowserRouter>

@@ -1,5 +1,5 @@
 import React, { PureComponent } from "react";
-import Carousel from "app/components/Carousel";
+import {Link} from 'react-router-dom'
 
 export default class TestPage extends PureComponent {
   constructor(props) {
@@ -7,9 +7,11 @@ export default class TestPage extends PureComponent {
   }
   render() {
     return (
-      <Carousel/>
+      <>
+        <Link to="/test1">效果1</Link>
+        <Link to="/test2">效果2</Link>
+        <Link to="/test3">效果3</Link>
+      </>
     );
-  }
-  componentDidMount() {
   }
 }

@@ -1,47 +1,58 @@
-import React, { Component } from "react";
-import ReactDom from "react-dom";
-import cls from "classnames";
-import AlloyFinger from "alloyfinger";
-import "./styles.less";
+import React, { Component } from 'react';
+import ReactDom from 'react-dom';
+import cls from 'classnames';
+import AlloyFinger from 'alloyfinger';
+import './styles.less';
 
 export default class Carousel extends Component {
   constructor(props) {
     super(props);
     this.handle = null;
     this.touchType = {
-      down: "DOWN",
-      up: "UP"
+      down: 'DOWN',
+      up: 'UP'
     };
   }
+  pageSize = 3;
+  animateEndTime = 650;
   state = {
     index: 0,
     data: [
       {
-        color: "#396",
-        text: "page1"
+        color: '#396',
+        text: 'page1'
       },
       {
-        color: "#F63",
-        text: "page2"
+        color: '#F63',
+        text: 'page2'
       },
       {
-        color: "#06a",
-        text: "page3"
+        color: '#06a',
+        text: 'page3'
+      },
+      {
+        color: '#52c41a',
+        text: 'page4'
+      },
+      {
+        color: 'pink',
+        text: 'page5'
       }
-    ]
+    ],
+    up: false
   };
   onMoveDown = () => {
-    console.log("down");
-    this.setState({
-      index: this.state.index - 1
-    });
-  };
-  onMoveUp = () => {
-    console.log("up");
     const data = [...this.state.data];
     const shift = data.pop();
     data.unshift(shift);
-    console.log(data);
+    this.setState({
+      data
+    });
+  };
+  onMoveUp = () => {
+    const data = [...this.state.data];
+    const shift = data.shift();
+    data.push(shift);
     this.setState({
       data
     });
@@ -49,10 +60,10 @@ export default class Carousel extends Component {
   onSwipe = direction => {
     const _direction = direction.toUpperCase();
     switch (_direction) {
-      case this.touchType["down"]:
+      case this.touchType['down']:
         this.onMoveDown();
         break;
-      case this.touchType["up"]:
+      case this.touchType['up']:
         this.onMoveUp();
         break;
       default:
@@ -61,19 +72,23 @@ export default class Carousel extends Component {
   };
   render() {
     const { index, data } = this.state;
-    console.log(index);
+
+    const _data = data.slice(index, this.pageSize);
     return (
       <div className="container" ref={node => (this.node = node)}>
-        {data.map(({ color, text }, i) => {
+        {_data.map(({ color, text }, i) => {
           return (
             <div
-              className={cls("wrap", { active: index === i})}
-              key={i}
+              className={cls(
+                'wrap',
+                { active: i === 0 },
+              )}
+              key={`animating-${Date.now()}-${i}`}
               style={{
                 backgroundColor: color,
                 zIndex: i + 1,
-                // bottom: `${i * 10}%`
-                transform:`translate3d(0,${ i === 0 ? 100 : 200 - (data.length - i) * 10}%,0)`
+                transform: `translate3d(0,${200 - (_data.length - i) * 10}%,0)`,
+                animationDelay: `${i * 0.05}s`
               }}
             >
               <span className="text">{text}</span>
@@ -84,7 +99,7 @@ export default class Carousel extends Component {
     );
   }
   move = direction => {
-    console.log("swipe:", direction);
+    console.log('swipe:', direction);
   };
   componentDidMount() {
     this.handle = new AlloyFinger(this.node, {
@@ -94,6 +109,6 @@ export default class Carousel extends Component {
     });
   }
   componentWillMount() {
-    Reflect.deleteProperty(this, "handle");
+    Reflect.deleteProperty(this, 'handle');
   }
 }
