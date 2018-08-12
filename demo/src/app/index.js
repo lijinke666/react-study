@@ -9,8 +9,11 @@ import Carousel from "shared/components/Carousel";
 import Carousel2 from "shared/components/Carousel2";
 import Carousel3 from "shared/components/Carousel3";
 import ImageProcess from "app/routes/imageProcess"
+import Message from "app/routes/message"
+import MusicPlayer from "app/routes/musicPlayer"
 
 import "./styles.less";
+import Turntable from "app/routes/turntable";
 
 class App extends PureComponent {
   render() {
@@ -35,6 +38,9 @@ class App extends PureComponent {
             <Route path="/test2" component={Carousel2} />
             <Route path="/test3" component={Carousel3} />
             <Route path="/test4" component={ImageProcess} />
+            <Route path="/test5" component={Message} />
+            <Route path="/test6" component={MusicPlayer} />
+            <Route path="/test7" component={Turntable} />
             <Route path="*" component={NotFound} />
           </Switch>
         </BrowserRouter>

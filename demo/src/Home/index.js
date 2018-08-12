@@ -45,6 +45,9 @@ export default class Home extends PureComponent {
         <Button onClick={()=> this.props.history.push('/test2')}>轮播图2</Button>
         <Button onClick={()=> this.props.history.push('/test3')}>轮播图3</Button>
         <Button onClick={()=> this.props.history.push('/test4')}>图片处理</Button>
+        <Button onClick={()=> this.props.history.push('/test5')}>消息提示</Button>
+        <Button onClick={()=> this.props.history.push('/test6')}>音乐播放器</Button>
+        <Button onClick={()=> this.props.history.push('/test7')}>抽奖转盘</Button>
       </div>
     );
   }
