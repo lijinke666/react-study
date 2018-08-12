@@ -8,6 +8,7 @@ import history from "libs/history";
 import Carousel from "shared/components/Carousel";
 import Carousel2 from "shared/components/Carousel2";
 import Carousel3 from "shared/components/Carousel3";
+import ImageProcess from "app/routes/imageProcess"
 
 import "./styles.less";
 
@@ -33,6 +34,7 @@ class App extends PureComponent {
             <Route path="/test1" component={Carousel} />
             <Route path="/test2" component={Carousel2} />
             <Route path="/test3" component={Carousel3} />
+            <Route path="/test4" component={ImageProcess} />
             <Route path="*" component={NotFound} />
           </Switch>
         </BrowserRouter>

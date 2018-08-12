@@ -35,36 +35,16 @@ export default class Home extends PureComponent {
     location.href = url;
   };
   render() {
-    const {
-      loading,
-      data: { toolName, name, repository }
-    } = this.props; //通过 react-redux connect 之后 props 里面有 state 里的 data
 
     return (
       <div key="home" className="home">
-        {loading ? (
-          <Spin tip={`Welcome to use Dawdler.`} size="large" />
-        ) : (
-          <>
-            <h2>
-              Hey ! Thank you for using{" "}
-              <strong className="name">{toolName}</strong>
-            </h2>
-            <Button
-              icon="github"
-              type="primary"
-              onClick={() => this.goGithub(repository.git)}
-            >
-              Github
-            </Button>
-            <Divider>
-              {name} By:{" "}
-              <a href={repository.git} target="_blank">
-                {toolName}
-              </a>
-            </Divider>
-          </>
-        )}
+        <Divider>
+          所有 组件 demo
+        </Divider>
+        <Button onClick={()=> this.props.history.push('/test1')}>轮播图1</Button>
+        <Button onClick={()=> this.props.history.push('/test2')}>轮播图2</Button>
+        <Button onClick={()=> this.props.history.push('/test3')}>轮播图3</Button>
+        <Button onClick={()=> this.props.history.push('/test4')}>图片处理</Button>
       </div>
     );
   }
