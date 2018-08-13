@@ -1,39 +1,14 @@
 import React, { PureComponent } from "react";
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
-import { Divider, Button, message, Spin } from "antd";
+import { Divider, Button, message } from "antd";
 import errorBoundary from "shared/components/ErrorBoundary";
 
-import sayHello from "./action";
 import "./styles.less";
 
-/**
- * 这里绑定 你 自己的 action
- * 每一个路由 对应一个 action 和 reducer  好维护,直观
- * 这里用到了 类的修饰器 比 传统的那种写法 方便直观一些
- */
-@connect(
-  ({ HomeReducer }) => ({
-    data: HomeReducer.data,
-    loading: HomeReducer.loading
-  }),
-  dispatch =>
-    bindActionCreators(
-      {
-        sayHello
-      },
-      dispatch
-    )
-)
 @errorBoundary
 export default class Home extends PureComponent {
   constructor(props) {
     super(props);
   }
-  goGithub = url => {
-    message.info("Thank you!");
-    location.href = url;
-  };
   render() {
 
     return (
@@ -44,14 +19,17 @@ export default class Home extends PureComponent {
         <Button onClick={()=> this.props.history.push('/test1')}>轮播图1</Button>
         <Button onClick={()=> this.props.history.push('/test2')}>轮播图2</Button>
         <Button onClick={()=> this.props.history.push('/test3')}>轮播图3</Button>
-        <Button onClick={()=> this.props.history.push('/test4')}>图片处理</Button>
-        <Button onClick={()=> this.props.history.push('/test5')}>消息提示</Button>
-        <Button onClick={()=> this.props.history.push('/test6')}>音乐播放器</Button>
-        <Button onClick={()=> this.props.history.push('/test7')}>抽奖转盘</Button>
+        <Button onClick={()=> this.props.history.push('/imageProcess')}>图片处理</Button>
+        <Button onClick={()=> this.props.history.push('/message')}>消息提示</Button>
+        <Button onClick={()=> this.props.history.push('/musicPlayer')}>音乐播放器</Button>
+        <Button onClick={()=> this.props.history.push('/turntable')}>抽奖转盘</Button>
+
+        <Divider>
+        高阶组件
+        </Divider>
+        <Button onClick={()=> this.props.history.push('/error')}>错误边界</Button>
+        <Button onClick={()=> this.props.history.push('/withHeader')}>添加头部</Button>
       </div>
     );
-  }
-  componentDidMount() {
-    this.props.sayHello();
   }
 }
