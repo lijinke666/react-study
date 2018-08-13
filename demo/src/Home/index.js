@@ -29,6 +29,7 @@ export default class Home extends PureComponent {
         </Divider>
         <Button onClick={()=> this.props.history.push('/error')}>错误边界</Button>
         <Button onClick={()=> this.props.history.push('/withHeader')}>添加头部</Button>
+        <Button onClick={()=> this.props.history.push('/withLoading')}>自动加载</Button>
       </div>
     );
   }

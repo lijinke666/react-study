@@ -16,6 +16,7 @@ import "./styles.less";
 import Turntable from "app/routes/turntable";
 import ErrorBoundary from "app/routes/error";
 import WithHeader from "app/routes/withHeader"
+import WithLoading from "app/routes/WithLoading";
 
 class App extends PureComponent {
   render() {
@@ -39,6 +40,7 @@ class App extends PureComponent {
             <Route path="/turntable" component={Turntable} />
             <Route path="/error" component={ErrorBoundary} />
             <Route path="/withHeader" component={WithHeader} />
+            <Route path="/withLoading" component={WithLoading} />
             <Route path="*" component={NotFound} />
           </Switch>
         </BrowserRouter>
