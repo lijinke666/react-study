@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import Message from "rc-message"
+import "rc-message/assets/index.css"
 
 export default class message extends Component {
   render() {
