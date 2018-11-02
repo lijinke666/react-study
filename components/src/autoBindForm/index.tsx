@@ -1,6 +1,8 @@
 import * as React from 'react'
 import { Form } from 'antd'
 import omit from 'lodash-es/omit'
+import xor from 'lodash-es/xor'
+import isEmpty from 'lodash-es/isEmpty'
 
 const getDisplayName = (component: React.ComponentClass) => {
   return component.displayName || component.name || 'Component'
@@ -10,79 +12,98 @@ export interface IAutoBindFormHelpProps {
   hasError: boolean,
 }
 
+interface IAutoBindFormHelpState {
+  filterFields: string[]
+}
+
 /**
  * @name AutoBindForm
- * @param {filterFields} string[]=[] 需要过滤(非必填)的字段
- * @param {WrappedComponent.defaultFieldsValue} object 初始值
+ * @param {WrappedComponent.defaultFieldsValue} object 表单初始值
  */
-export default (filterFields: string[] = []) =>
-  (WrappedComponent: React.ComponentClass<any>) => {
-    class AutoBindForm extends WrappedComponent {
-      static displayName = `HOC(${getDisplayName(WrappedComponent)})`
+export default (WrappedComponent: React.ComponentClass<any>) => {
+  class AutoBindForm extends WrappedComponent {
 
-      get hasError() {
-        const {
-          form: { getFieldsError, isFieldTouched },
-          defaultFieldsValue,
-        } = this.props
+    get hasError() {
+      const {
+        form: { getFieldsError, isFieldTouched, getFieldValue },
+        defaultFieldsValue,
+      } = this.props
 
-        const isEdit = !!defaultFieldsValue
+      const { filterFields } = this.state
+      const isEdit = !!defaultFieldsValue
+      let fieldsError = getFieldsError()
 
-        let fieldsError = getFieldsError() as any
+      const needOmitFields = filterFields.filter((filed) => !isFieldTouched(filed))
+      if(!isEmpty(needOmitFields)) {
+        fieldsError = omit(fieldsError, needOmitFields)
+      }
 
-        filterFields.forEach((field) => {
-          if (!isFieldTouched(field)) {
-            fieldsError = omit(fieldsError, [field])
-          }
+      return Object
+        .keys(fieldsError)
+        .some((field) => {
+          const isCheckFieldTouched = !isEdit || isEmpty(getFieldValue(field))
+          return isCheckFieldTouched ? (!isFieldTouched(field) || fieldsError[field]) : fieldsError[field]
         })
-        return Object
-          .keys(fieldsError)
-          .some((field) => isEdit ? fieldsError[field] : (!isFieldTouched(field) || fieldsError[field]))
-      }
+    }
 
-      autoBindFormHelp: React.Component<{}, {}> = null
+    static displayName = `HOC(${getDisplayName(WrappedComponent)})`
 
-      getFormRef = (formRef: React.Component) => {
-        this.autoBindFormHelp = formRef
-      }
+    state: IAutoBindFormHelpState = {
+      filterFields: [],
+    }
 
-      render() {
-        return (
-          <WrappedComponent
-            wrappedComponentRef={this.getFormRef}
-            {...this.props}
-            hasError={this.hasError}
-          />
-        )
-      }
-      componentDidMount() {
-        const {
-          form: {
-            validateFields,
-            getFieldsValue,
-            setFields,
-          },
-        } = this.props
+    autoBindFormHelp: React.Component<{}, {}> = null
 
-        validateFields()
+    getFormRef = (formRef: React.Component) => {
+      this.autoBindFormHelp = formRef
+    }
 
-        Object.keys(getFieldsValue())
+    render() {
+      return (
+        <WrappedComponent
+          wrappedComponentRef={this.getFormRef}
+          {...this.props}
+          hasError={this.hasError}
+        />
+      )
+    }
+    componentDidMount() {
+      const {
+        form: {
+          validateFields,
+          getFieldsValue,
+          setFields,
+        },
+      } = this.props
+
+      const fields = Object.keys(getFieldsValue())
+
+      validateFields((err: object) => {
+        const filterFields = xor(fields, Object.keys(err || []))
+        this.setState({
+          filterFields,
+        })
+
+        const allFields: { [key: string]: any } = {}
+        fields
           .filter((field) => !filterFields.includes(field))
           .forEach((field) => {
-            setFields({
-              [field]: {
-                errors: null,
-                status: null,
-              },
-            })
+            allFields[field] = {
+              errors: null,
+              status: null,
+            }
           })
+
+        setFields(allFields)
 
         // 属性劫持 初始化默认值
         if (this.props.defaultFieldsValue) {
           this.props.form.setFieldsValue(this.props.defaultFieldsValue)
         }
-      }
+      })
     }
-
-    return Form.create()(AutoBindForm)
   }
+
+  return Form.create()(AutoBindForm)
+}
+
